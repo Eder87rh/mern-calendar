@@ -1,10 +1,11 @@
-import { Calendar } from "react-big-calendar";
+import { Calendar, View } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
 import { addHours } from "date-fns";
 import { NavBar, CalendarEvent } from "../";
 import { localizer, getMessagesEs } from "../../helpers";
 import { IEvent } from "../types/calendarTypes";
+import { useState } from "react";
 
 const events: IEvent[] = [
   {
@@ -21,13 +22,44 @@ const events: IEvent[] = [
 ];
 
 export const CalendarPage = () => {
+  const [lastView, setLastView] =
+    useState<View | undefined>(
+      localStorage.getItem("lastView") as View | undefined
+    ) || ("week" as View | undefined);
+
   const eventStyleGetter = (
     event: IEvent,
     start: any,
     end: any,
     isSelected: boolean
   ) => {
-    return event;
+    const style = {
+      backgroundColor: "#347CF7",
+      borderRadius: "0px",
+      opacity: 0.8,
+      color: "white",
+    };
+    return {
+      style,
+    };
+  };
+
+  const onDoubleClick = (
+    event: IEvent,
+    e: React.SyntheticEvent<HTMLElement, Event>
+  ) => {
+    console.log({ doubleClick: event });
+  };
+
+  const onClick = (
+    event: IEvent,
+    e: React.SyntheticEvent<HTMLElement, Event>
+  ) => {
+    console.log({ click: event });
+  };
+
+  const onViewChanged = (view: View) => {
+    localStorage.setItem("lastView", view);
   };
 
   return (
@@ -36,6 +68,7 @@ export const CalendarPage = () => {
       <Calendar
         culture="es"
         localizer={localizer}
+        defaultView={lastView}
         events={events}
         startAccessor="start"
         endAccessor="end"
@@ -45,6 +78,9 @@ export const CalendarPage = () => {
         components={{
           event: CalendarEvent,
         }}
+        onDoubleClickEvent={onDoubleClick}
+        onSelectEvent={onClick}
+        onView={onViewChanged}
       />
     </>
   );
