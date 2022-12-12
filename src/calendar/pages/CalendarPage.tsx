@@ -1,11 +1,11 @@
 import { Calendar, View } from "react-big-calendar";
+import { useState } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
 import { addHours } from "date-fns";
-import { NavBar, CalendarEvent } from "../";
+import { NavBar, CalendarEvent, CalendarModal } from "../";
 import { localizer, getMessagesEs } from "../../helpers";
 import { IEvent } from "../types/calendarTypes";
-import { useState } from "react";
 
 const events: IEvent[] = [
   {
@@ -44,17 +44,11 @@ export const CalendarPage = () => {
     };
   };
 
-  const onDoubleClick = (
-    event: IEvent,
-    e: React.SyntheticEvent<HTMLElement, Event>
-  ) => {
+  const onDoubleClick = (event: IEvent) => {
     console.log({ doubleClick: event });
   };
 
-  const onClick = (
-    event: IEvent,
-    e: React.SyntheticEvent<HTMLElement, Event>
-  ) => {
+  const onClick = (event: IEvent) => {
     console.log({ click: event });
   };
 
@@ -82,6 +76,7 @@ export const CalendarPage = () => {
         onSelectEvent={onClick}
         onView={onViewChanged}
       />
+      <CalendarModal />
     </>
   );
 };
