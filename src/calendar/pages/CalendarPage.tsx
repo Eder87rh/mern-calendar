@@ -3,7 +3,7 @@ import { useState } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
 import { addHours } from "date-fns";
-import { NavBar, CalendarEvent, CalendarModal } from "../";
+import { NavBar, CalendarEvent, CalendarModal, FABAddNew } from "../";
 import { localizer, getMessagesEs } from "../../helpers";
 import { IEvent } from "../types/calendarTypes";
 import { useUIStore, useCalendarStore } from "../../hooks";
@@ -40,7 +40,6 @@ export const CalendarPage = () => {
 
   const onClick = (event: IEvent) => {
     setActiveEvent(event);
-    // console.log({ click: event });
   };
 
   const onViewChanged = (view: View) => {
@@ -53,7 +52,7 @@ export const CalendarPage = () => {
       <Calendar
         culture="es"
         localizer={localizer}
-        defaultView={lastView}
+        defaultView={lastView || "week"}
         events={events}
         startAccessor="start"
         endAccessor="end"
@@ -68,6 +67,7 @@ export const CalendarPage = () => {
         onView={onViewChanged}
       />
       <CalendarModal />
+      <FABAddNew />
     </>
   );
 };
